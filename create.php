@@ -1,31 +1,24 @@
-<?php include("DatabaseConnection.php"); ?>
-
-<?php
+<?php 
 require '../vendor/autoload.php';
-    $conn = new DatabaseConnection();
-    var_dump($conn->getConnection());
-
-$client = new MongoDB\Client;
-
-foreach ($client->listDatabases() as $databaseInfo) {
-    var_dump($databaseInfo);
-}
+include_once './CRUD/Database.php';
+include_once './CRUD/DataModels/product.php';
 
 
-$practice = $client->practice->test;
+$conn    = new Database();
+$product = new Product();
+$client  = $conn->getClient();
 
-var_dump($practice);
+// get posted data
+$data = json_decode(file_get_contents("php://input"));
 
-/*$mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
-$id = new MongoDB\BSON\ObjectId("5c2813dbc4ade5e2b9ef60e0");
-$filter = ['name' => 'joe'];
-$options = [];
-$query = new MongoDB\Driver\Query([$filter, $options]); 
-$rows = $mng->executeQuery("practice.test", $query);
+$product->setName($data->name);
+$product->setPrice($data->price);
+$product->setDescription($data->description);
+$product->setCategory_id($data->category_id);
+$product->setCreated(date('Y-m-d H:i:s'));
+$bson                    = MongoDB\BSON\fromJSON($product->createProduct());
+$document                = MongoDB\BSON\toPHP($bson);
 
-foreach ($rows as $document){
-    print($document);
-}
+$client->practice->users->insertOne($document);
+    
 
-
-*/
