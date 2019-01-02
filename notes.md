@@ -1,4 +1,4 @@
-###Setting Up A MongoDB php api
+### Setting Up A MongoDB php api
 Download mongodb extension and link with php
 Download composer, composer require mongodb/mongodb
 To use the MongoDB client autoload is required
@@ -6,7 +6,7 @@ To use the MongoDB client autoload is required
 require '../vendor/autoload.php';
  ```
 
-##Functions
+## Functions
 ```php
 insertOne([]); Insert to mongoDB Query
 getInsertedId()
@@ -24,7 +24,7 @@ $bson = MongoDB\BSON\fromJSON($product->createProduct());
 $document = MongoDB\BSON\toPHP($bson);
 ```
 
-###Projections 
+### Projections 
 Queries return all fields in matching documents. 
 To limit data sent you can include a projection to restrict fields that are returned
 
@@ -58,7 +58,7 @@ $cursor = $collection->find([
 ]);
 ```
 
-###Queries with aggregates
+### Queries with aggregates
 ```php
 $cursor = $collection->aggregate([
     ['$group' => ['_id' => '$state', 'count' => ['$sum' => 1]]],
